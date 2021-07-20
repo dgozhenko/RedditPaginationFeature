@@ -13,15 +13,17 @@ import javax.inject.Inject
 
 
 class FeedViewModel @Inject constructor(private val retrofit: Retrofit): ViewModel() {
-     private val _postLiveData = MutableLiveData<LiveData<PagedList<RedditPost>>>()
-     val postLiveData: LiveData<LiveData<PagedList<RedditPost>>> get() = _postLiveData
+     private var _postLiveData: LiveData<PagedList<RedditPost>>
+     val postLiveData: LiveData<PagedList<RedditPost>> get() = _postLiveData
+
+
 
     init {
         val config = PagedList.Config.Builder()
             .setPageSize(10)
             .setEnablePlaceholders(false)
             .build()
-        _postLiveData.postValue(initializedPagedListBuilder(config).build())
+        _postLiveData = initializedPagedListBuilder(config).build()
     }
 
     private fun initializedPagedListBuilder(config: PagedList.Config):

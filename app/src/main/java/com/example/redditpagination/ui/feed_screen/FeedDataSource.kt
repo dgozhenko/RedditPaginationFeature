@@ -26,7 +26,7 @@ class FeedDataSource @Inject constructor(retrofit: Retrofit): PageKeyedDataSourc
     ) {
         scope.launch {
             try {
-                val response = apiService.fetchPosts(loadSize = params.requestedLoadSize)
+                val response = apiService.fetchTopPosts(loadSize = params.requestedLoadSize)
                 when {
                     response.isSuccessful -> {
                         val listing = response.body()?.data
@@ -47,7 +47,7 @@ class FeedDataSource @Inject constructor(retrofit: Retrofit): PageKeyedDataSourc
         scope.launch {
             try {
                 val response = apiService
-                    .fetchPosts(loadSize = params.requestedLoadSize, before = params.key)
+                    .fetchTopPosts(loadSize = params.requestedLoadSize, before = params.key)
                 when {
                     response.isSuccessful -> {
                         val listing = response.body()?.data
@@ -65,7 +65,7 @@ class FeedDataSource @Inject constructor(retrofit: Retrofit): PageKeyedDataSourc
         scope.launch {
             try {
                 val response = apiService
-                    .fetchPosts(loadSize = params.requestedLoadSize, after = params.key)
+                    .fetchTopPosts(loadSize = params.requestedLoadSize, after = params.key)
                 when {
                     response.isSuccessful -> {
                         val listing = response.body()?.data
