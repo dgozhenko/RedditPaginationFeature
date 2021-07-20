@@ -7,8 +7,10 @@ import com.example.redditpagination.ui.feed_screen.FeedFragment
 import dagger.Component
 import javax.inject.Singleton
 
+// dagger application component
 @Singleton
 @Component(modules = [AppModule::class, NetworkModule::class, ViewModelsModule::class])
 interface ApplicationComponent {
-    fun inject(fragment: FeedFragment)
+  // inject dagger in feed fragment
+  fun inject(fragment: FeedFragment)
 }

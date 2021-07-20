@@ -15,42 +15,56 @@ import com.example.redditpagination.App
 import com.example.redditpagination.databinding.FragmentFeedBinding
 import javax.inject.Inject
 
-class FeedFragment: Fragment() {
+class FeedFragment : Fragment() {
 
-    private var _binding: FragmentFeedBinding? = null
-    private val binding get() = _binding!!
+  // create binding with fragment
+  private var _binding: FragmentFeedBinding? = null
+  private val binding
+    get() = _binding!!
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
+  // inject viewModelFactory and viewModel
+  @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private val viewModel by viewModels<FeedViewModel> { viewModelFactory }
+  private val viewModel by viewModels<FeedViewModel> { viewModelFactory }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        (requireActivity().application as App).appComponent.inject(this)
-    }
+  // inject app component
+  override fun onAttach(context: Context) {
+    super.onAttach(context)
+    (requireActivity().application as App).appComponent.inject(this)
+  }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentFeedBinding.inflate(inflater)
-        return binding.root
-    }
+  override fun onCreateView(
+      inflater: LayoutInflater,
+      container: ViewGroup?,
+      savedInstanceState: Bundle?
+  ): View {
+    // initialize binding
+    _binding = FragmentFeedBinding.inflate(inflater)
+    return binding.root
+  }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val adapter = FeedAdapter(OnClickListener {
-            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(it.redirectUrl))
-            startActivity(browserIntent)
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+
+    // create onClickListener logic
+    val adapter =
+        FeedAdapter(
+            OnClickListener {
+              val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(it.redirectUrl))
+              startActivity(browserIntent)
+            })
+
+    // initialize recyclerView
+    val recyclerView = binding.feedRv
+    recyclerView.layoutManager = LinearLayoutManager(requireContext())
+    recyclerView.adapter = adapter
+
+    // observe for data changes in live data
+    viewModel.postLiveData.observe(
+        viewLifecycleOwner,
+        {
+          adapter.getPosts(it)
+          adapter.submitList(it)
         })
-        val recyclerView = binding.feedRv
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        recyclerView.adapter = adapter
-        viewModel.postLiveData.observe(viewLifecycleOwner, {
-            adapter.getPosts(it)
-            adapter.submitList(it)
-        })
-    }
+  }
 }

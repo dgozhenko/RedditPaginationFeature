@@ -5,11 +5,13 @@ import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
+// api services
 interface ApiService {
-    @GET("/top/.json")
-    suspend fun fetchTopPosts(
-        @Query("limit") loadSize: Int = 10,
-        @Query("after") after: String? = null,
-        @Query("before") before: String? = null
-    ): Response<RedditApiResponse>
+  // function for fetching top posts with return as RedditApiResponse
+  @GET("/top/.json")
+  suspend fun fetchTopPosts(
+      @Query("limit") loadSize: Int = 10,
+      @Query("after") after: String? = null,
+      @Query("before") before: String? = null
+  ): Response<RedditApiResponse>
 }

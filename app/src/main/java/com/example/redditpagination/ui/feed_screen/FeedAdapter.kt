@@ -12,28 +12,34 @@ import com.example.redditpagination.R
 import com.example.redditpagination.network.response.RedditPost
 import com.example.redditpagination.util.DiffUtilCallback
 import com.google.android.material.textview.MaterialTextView
-import org.ocpsoft.prettytime.PrettyTime
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneOffset
+import org.ocpsoft.prettytime.PrettyTime
 
-class FeedAdapter(private val onClickListener: OnClickListener) : PagedListAdapter<RedditPost, FeedAdapter.PostViewHolder>(DiffUtilCallback()) {
-
+// Feed paged list adapter - special adapter for first paging library versions
+class FeedAdapter(private val onClickListener: OnClickListener) :
+    PagedListAdapter<RedditPost, FeedAdapter.PostViewHolder>(DiffUtilCallback()) {
+  // initialize list with data
   private lateinit var postsList: PagedList<RedditPost>
+
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
     val view = LayoutInflater.from(parent.context).inflate(R.layout.feed_adapter_row, parent, false)
     return PostViewHolder(view)
   }
 
   override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
+
+    // realisation for custom onClickListener
     val itemView = holder.itemView
-    itemView.setOnClickListener {
-      onClickListener.onClick(postsList[position]!!)
-    }
+    itemView.setOnClickListener { onClickListener.onClick(postsList[position]!!) }
+
+    // binds data from list
     return holder.bindPost(postsList[position]!!)
   }
 
   fun getPosts(redditPosts: PagedList<RedditPost>) {
+    // function that upload data from viewModel to adapter
     postsList = redditPosts
     notifyDataSetChanged()
   }
@@ -47,6 +53,7 @@ class FeedAdapter(private val onClickListener: OnClickListener) : PagedListAdapt
     private val postDateText = itemView.findViewById<MaterialTextView>(R.id.post_creation_date)
     private val thumbnailImage = itemView.findViewById<ImageView>(R.id.thumbnail)
 
+    // bind data with UI
     fun bindPost(redditPost: RedditPost) {
       with(redditPost) {
         val date = LocalDateTime.ofInstant(Instant.ofEpochSecond(created), ZoneOffset.UTC)
@@ -69,6 +76,7 @@ class FeedAdapter(private val onClickListener: OnClickListener) : PagedListAdapt
   }
 }
 
+// custom onClickListener
 class OnClickListener(val onClickListener: (redditPost: RedditPost) -> Unit) {
   fun onClick(redditPost: RedditPost) = onClickListener(redditPost)
 }

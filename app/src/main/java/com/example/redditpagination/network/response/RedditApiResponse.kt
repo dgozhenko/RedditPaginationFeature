@@ -1,3 +1,4 @@
 package com.example.redditpagination.network.response
 
-class RedditApiResponse (val data: RedditListing)
+// api response
+class RedditApiResponse(val data: RedditListing)
