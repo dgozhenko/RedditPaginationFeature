@@ -10,7 +10,7 @@ class DiffUtilCallback : DiffUtil.ItemCallback<RedditPost>() {
   }
 
   override fun areContentsTheSame(oldItem: RedditPost, newItem: RedditPost): Boolean {
-    return oldItem.title == newItem.title &&
+    return oldItem.key == newItem.key &&
         oldItem.score == newItem.score &&
         oldItem.commentCount == newItem.commentCount
   }

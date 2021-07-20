@@ -1,11 +1,10 @@
-package com.example.redditpagination.ui.feed_screen
+package com.example.redditpagination.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.paging.PagedList
-import androidx.paging.PagedListAdapter
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.redditpagination.R
@@ -19,7 +18,7 @@ import org.ocpsoft.prettytime.PrettyTime
 
 // Feed paged list adapter - special adapter for first paging library versions
 class FeedAdapter(private val onClickListener: OnClickListener) :
-    PagedListAdapter<RedditPost, FeedAdapter.PostViewHolder>(DiffUtilCallback()) {
+    PagingDataAdapter<RedditPost, FeedAdapter.PostViewHolder>(DiffUtilCallback()) {
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
     val view = LayoutInflater.from(parent.context).inflate(R.layout.feed_adapter_row, parent, false)
@@ -29,11 +28,9 @@ class FeedAdapter(private val onClickListener: OnClickListener) :
   override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
     val itemView = holder.itemView
     getItem(position)?.let { post ->
-    itemView.setOnClickListener {
-        onClickListener.onClick(post)
-      }
+      itemView.setOnClickListener { onClickListener.onClick(post) }
       holder.bindPost(post)
-      }
+    }
   }
 
   class PostViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

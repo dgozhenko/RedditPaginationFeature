@@ -8,4 +8,5 @@
     <string name="int_placeholder">0</string>
     <string name="date_placeholder">30 days ago</string>
     <string name="thumbnail_content_desc">thumbnail</string>
+    <string name="retry_text">Retry</string>
 </resources>
