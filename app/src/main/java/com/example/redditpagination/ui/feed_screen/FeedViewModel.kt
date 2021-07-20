@@ -17,7 +17,7 @@ class FeedViewModel @Inject constructor(private val retrofit: Retrofit) : ViewMo
 
   init {
     // create configuration
-    val config = PagedList.Config.Builder().setPageSize(50).setEnablePlaceholders(false).build()
+    val config = PagedList.Config.Builder().setPageSize(10).setEnablePlaceholders(false).build()
 
     // swap empty live data with live data from paging library
     _postLiveData = initializedPagedListBuilder(config).build()
