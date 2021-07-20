@@ -1,6 +1,7 @@
 # RedditPaginationFeature
 There 2 versions of application
 First uses - Paging V1 - located on branch master
+
 Second uses - Paging V3 - located on branch feature/pagingV3
 First frameworks:
 - Paging V1
