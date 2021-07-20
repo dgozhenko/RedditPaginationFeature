@@ -1,38 +1,27 @@
 package com.example.redditpagination.ui.feed_screen
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.paging.DataSource
-import androidx.paging.LivePagedListBuilder
-import androidx.paging.PagedList
+import androidx.lifecycle.viewModelScope
+import androidx.paging.ExperimentalPagingApi
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import com.example.redditpagination.database.RedditPaginationDatabase
 import com.example.redditpagination.network.response.RedditPost
+import com.example.redditpagination.ui.repository.FeedRepository
 import javax.inject.Inject
+import kotlinx.coroutines.flow.Flow
 import retrofit2.Retrofit
 
-class FeedViewModel @Inject constructor(private val retrofit: Retrofit) : ViewModel() {
-  // live data with pagedList of RedditPost
-  private var _postLiveData: LiveData<PagedList<RedditPost>>
-  val postLiveData: LiveData<PagedList<RedditPost>>
-    get() = _postLiveData
+@ExperimentalPagingApi
+class FeedViewModel
+@Inject
+constructor(retrofit: Retrofit, database: RedditPaginationDatabase) :
+    ViewModel() {
+  // get instance of feed repo
+  private val feedRepository = FeedRepository(retrofit, database)
 
-  init {
-    // create configuration
-    val config = PagedList.Config.Builder().setPageSize(10).setEnablePlaceholders(false).build()
-
-    // swap empty live data with live data from paging library
-    _postLiveData = initializedPagedListBuilder(config).build()
-  }
-
-  // function that call data from data source
-  private fun initializedPagedListBuilder(
-      config: PagedList.Config
-  ): LivePagedListBuilder<String, RedditPost> {
-    val dataSourceFactory =
-        object : DataSource.Factory<String, RedditPost>() {
-          override fun create(): DataSource<String, RedditPost> {
-            return FeedDataSource(retrofit)
-          }
-        }
-    return LivePagedListBuilder(dataSourceFactory, config)
+  // get data from repo
+  fun getFeed(): Flow<PagingData<RedditPost>> {
+    return feedRepository.fetchPosts().cachedIn(viewModelScope)
   }
 }
