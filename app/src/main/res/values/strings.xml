@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">RedditPagination</string>
+    <string name="staricon">starIcon</string>
+    <string name="comment_icon">Comment Icon</string>
+    <string name="title_placeholder">Title</string>
+    <string name="author_placeholder">Author</string>
+    <string name="subreddit_placeholder">Subreddit</string>
+    <string name="int_placeholder">0</string>
+    <string name="date_placeholder">30 days ago</string>
+    <string name="thumbnail_content_desc">thumbnail</string>
 </resources>
