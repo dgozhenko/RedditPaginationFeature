@@ -4,16 +4,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.paging.PagedList
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.redditpagination.R
 import com.example.redditpagination.network.response.RedditPost
 import com.example.redditpagination.util.DiffUtilCallback
-import com.github.marlonlom.utilities.timeago.TimeAgo
 import com.google.android.material.textview.MaterialTextView
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneOffset
+import org.ocpsoft.prettytime.PrettyTime
 
-class FeedAdapter : PagedListAdapter<RedditPost, FeedAdapter.PostViewHolder>(DiffUtilCallback()) {
+// Feed paged list adapter - special adapter for first paging library versions
+class FeedAdapter(private val onClickListener: OnClickListener) :
+    PagedListAdapter<RedditPost, FeedAdapter.PostViewHolder>(DiffUtilCallback()) {
+  // initialize list with data
+  private lateinit var postsList: PagedList<RedditPost>
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
     val view = LayoutInflater.from(parent.context).inflate(R.layout.feed_adapter_row, parent, false)
@@ -21,7 +29,14 @@ class FeedAdapter : PagedListAdapter<RedditPost, FeedAdapter.PostViewHolder>(Dif
   }
 
   override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
-    getItem(position)?.let { holder.bindPost(it) }
+    val itemView = holder.itemView
+    getItem(position)?.let { post ->
+    itemView.setOnClickListener {
+        onClickListener.onClick(post)
+
+      }
+      holder.bindPost(post)
+      }
   }
 
   class PostViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -33,9 +48,12 @@ class FeedAdapter : PagedListAdapter<RedditPost, FeedAdapter.PostViewHolder>(Dif
     private val postDateText = itemView.findViewById<MaterialTextView>(R.id.post_creation_date)
     private val thumbnailImage = itemView.findViewById<ImageView>(R.id.thumbnail)
 
+    // bind data with UI
     fun bindPost(redditPost: RedditPost) {
       with(redditPost) {
-        val textInAgoFormat = TimeAgo.using(created)
+        val date = LocalDateTime.ofInstant(Instant.ofEpochSecond(created), ZoneOffset.UTC)
+        val prettyTime = PrettyTime()
+        val textInAgoFormat = prettyTime.format(date)
         scoreText.text = score.toString()
         commentText.text = commentCount.toString()
         titleText.text = title
@@ -51,4 +69,9 @@ class FeedAdapter : PagedListAdapter<RedditPost, FeedAdapter.PostViewHolder>(Dif
       }
     }
   }
+}
+
+// custom onClickListener
+class OnClickListener(val onClickListener: (redditPost: RedditPost) -> Unit) {
+  fun onClick(redditPost: RedditPost) = onClickListener(redditPost)
 }

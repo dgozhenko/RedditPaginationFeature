@@ -1,3 +1,4 @@
 package com.example.redditpagination.network.response
 
-class PostContainer (val data: RedditPost)
+// post container
+class PostContainer(val data: RedditPost)

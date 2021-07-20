@@ -12,14 +12,16 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+// Create network module of Dagger
 @Module
 class NetworkModule {
-
+// add logging interceptor
   companion object {
     private val loggingInterceptor =
         HttpLoggingInterceptor().apply { this.level = HttpLoggingInterceptor.Level.BODY }
   }
 
+    // provide httpClient to app
   @Singleton
   @Provides
   fun providesHttpClient(): OkHttpClient {

@@ -9,6 +9,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
 
+// add view models module to dagger
 @Module
 abstract class ViewModelsModule {
 
@@ -16,7 +17,7 @@ abstract class ViewModelsModule {
   @Binds
   internal abstract fun bindViewModelFactory(factory: ViewModelsFactory): ViewModelProvider.Factory
 
-  // method that binds auth view model with DI
+  // method that binds feed view model with DI
   @Binds
   @IntoMap
   @ViewModelKey(FeedViewModel::class)
