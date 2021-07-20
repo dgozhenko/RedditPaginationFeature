@@ -1,10 +1,13 @@
 package com.example.redditpagination.network.response
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
 // post
+@Entity(tableName = "redditPosts")
 data class RedditPost(
-    @SerializedName("name") val key: String,
+    @SerializedName("name") @PrimaryKey val key: String,
     @SerializedName("title") val title: String,
     @SerializedName("score") val score: Int,
     @SerializedName("author_fullname") val author: String,
