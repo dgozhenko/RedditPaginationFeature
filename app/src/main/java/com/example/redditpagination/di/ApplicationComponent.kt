@@ -1,5 +1,6 @@
 package com.example.redditpagination.di
 
+import androidx.paging.ExperimentalPagingApi
 import com.example.redditpagination.di.module.AppModule
 import com.example.redditpagination.di.module.NetworkModule
 import com.example.redditpagination.di.module.ViewModelsModule
@@ -8,6 +9,7 @@ import dagger.Component
 import javax.inject.Singleton
 
 // dagger application component
+@ExperimentalPagingApi
 @Singleton
 @Component(modules = [AppModule::class, NetworkModule::class, ViewModelsModule::class])
 interface ApplicationComponent {
