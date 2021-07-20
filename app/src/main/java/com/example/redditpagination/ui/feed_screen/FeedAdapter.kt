@@ -20,8 +20,6 @@ import org.ocpsoft.prettytime.PrettyTime
 // Feed paged list adapter - special adapter for first paging library versions
 class FeedAdapter(private val onClickListener: OnClickListener) :
     PagedListAdapter<RedditPost, FeedAdapter.PostViewHolder>(DiffUtilCallback()) {
-  // initialize list with data
-  private lateinit var postsList: PagedList<RedditPost>
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
     val view = LayoutInflater.from(parent.context).inflate(R.layout.feed_adapter_row, parent, false)
@@ -33,7 +31,6 @@ class FeedAdapter(private val onClickListener: OnClickListener) :
     getItem(position)?.let { post ->
     itemView.setOnClickListener {
         onClickListener.onClick(post)
-
       }
       holder.bindPost(post)
       }
