@@ -29,19 +29,14 @@ class FeedAdapter(private val onClickListener: OnClickListener) :
   }
 
   override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
-
-    // realisation for custom onClickListener
     val itemView = holder.itemView
-    itemView.setOnClickListener { onClickListener.onClick(postsList[position]!!) }
+    getItem(position)?.let { post ->
+    itemView.setOnClickListener {
+        onClickListener.onClick(post)
 
-    // binds data from list
-    return holder.bindPost(postsList[position]!!)
-  }
-
-  fun getPosts(redditPosts: PagedList<RedditPost>) {
-    // function that upload data from viewModel to adapter
-    postsList = redditPosts
-    notifyDataSetChanged()
+      }
+      holder.bindPost(post)
+      }
   }
 
   class PostViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

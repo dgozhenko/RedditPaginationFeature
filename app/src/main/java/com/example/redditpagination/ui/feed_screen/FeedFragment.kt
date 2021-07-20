@@ -63,7 +63,6 @@ class FeedFragment : Fragment() {
     viewModel.postLiveData.observe(
         viewLifecycleOwner,
         {
-          adapter.getPosts(it)
           adapter.submitList(it)
         })
   }
