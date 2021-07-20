@@ -18,5 +18,8 @@ data class RedditPost(
     @SerializedName("created")
     val created: Long,
     @SerializedName("thumbnail")
-    val thumbnail: String
+    val thumbnail: String,
+    @SerializedName("url")
+    val redirectUrl: String
+
 )

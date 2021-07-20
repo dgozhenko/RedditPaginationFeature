@@ -6,8 +6,8 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface ApiService {
-    @GET("/r/aww/hot.json")
-    suspend fun fetchPosts(
+    @GET("/top/.json")
+    suspend fun fetchTopPosts(
         @Query("limit") loadSize: Int = 10,
         @Query("after") after: String? = null,
         @Query("before") before: String? = null
