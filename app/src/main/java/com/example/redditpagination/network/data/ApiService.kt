@@ -10,7 +10,7 @@ interface ApiService {
   // function for fetching top posts with return as RedditApiResponse
   @GET("/top/.json")
   suspend fun fetchTopPosts(
-      @Query("limit") loadSize: Int = 10,
+      @Query("limit") loadSize: Int = 50,
       @Query("after") after: String? = null,
       @Query("before") before: String? = null
   ): Response<RedditApiResponse>
