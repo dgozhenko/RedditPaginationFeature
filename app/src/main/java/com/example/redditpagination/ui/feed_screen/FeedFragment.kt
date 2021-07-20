@@ -1,6 +1,8 @@
 package com.example.redditpagination.ui.feed_screen
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -39,15 +41,16 @@ class FeedFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val adapter = FeedAdapter()
+        val adapter = FeedAdapter(OnClickListener {
+            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(it.redirectUrl))
+            startActivity(browserIntent)
+        })
         val recyclerView = binding.feedRv
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
         viewModel.postLiveData.observe(viewLifecycleOwner, {
-            it.observe(viewLifecycleOwner, { list ->
-                adapter.submitList(list)
-            })
-
+            adapter.getPosts(it)
+            adapter.submitList(it)
         })
     }
 }
