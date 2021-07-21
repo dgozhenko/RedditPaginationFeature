@@ -16,10 +16,10 @@ class FeedRepository
 @Inject
 constructor(private val retrofit: Retrofit, private val database: RedditPaginationDatabase) {
 
-  // fetch posts using flow from database, 10 per page
+  // fetch posts using flow from database, 50 per page
   fun fetchPosts(): Flow<PagingData<RedditPost>> {
     return Pager(
-            PagingConfig(pageSize = 10, enablePlaceholders = false),
+            PagingConfig(pageSize = 50, enablePlaceholders = false, prefetchDistance = 3),
             remoteMediator = FeedRemoteMediator(retrofit, database),
             pagingSourceFactory = { database.redditPostsDao().getPosts() })
         .flow

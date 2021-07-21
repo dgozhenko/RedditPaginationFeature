@@ -8,9 +8,9 @@ import retrofit2.http.Query
 // api services
 interface ApiService {
   // function for fetching top posts with return as RedditApiResponse
-  @GET("/top/.json")
+  @GET("/top.json")
   suspend fun fetchTopPosts(
-      @Query("limit") loadSize: Int = 10,
+      @Query("limit") loadSize: Int = 0,
       @Query("after") after: String? = null,
       @Query("before") before: String? = null
   ): Response<RedditApiResponse>
