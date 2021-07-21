@@ -35,14 +35,16 @@ constructor(retrofit: Retrofit, private val database: RedditPaginationDatabase) 
             }
           }
       // get data from reddit API
-      val response = apiService.fetchTopPosts(loadSize = state.config.pageSize)
+      val response =
+          apiService.fetchTopPosts(
+              loadSize = state.config.pageSize, after = loadKey?.after, before = loadKey?.before)
       val listing = response.body()?.data
       val redditPost = listing?.children?.map { it.data }
 
       if (redditPost != null) {
         // save data to database
         database.withTransaction {
-          database.redditKeysDao().saveRedditKeys(RedditKeys(0, loadKey?.after, loadKey?.before))
+          database.redditKeysDao().saveRedditKeys(RedditKeys(0, listing.after, listing.before))
           database.redditPostsDao().savePosts(redditPost)
         }
       }
